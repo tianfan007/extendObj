@@ -108,6 +108,9 @@ class intObj {
         public function toString():stringObj{
             return new stringObj(\strval($this->_int));
         }
+        public function decBin():stringObj {
+            return new stringObj(\decbin($this-_int));
+        }
 }
 
 
