@@ -4,7 +4,7 @@
  *@package extendObj
  *@author Tianfan
  *@license Apache License 2.0
- *@varsion 0.0.1
+ *@varsion 0.0.2
  */
 namespace extendObj;
 
@@ -44,7 +44,7 @@ class stringObj {
 		return new stringObj(\substr($this->_string, ...$params));
 	}
 	
-	public function sha1(bool $ouput=false):stringObj {
+	public function sha1(bool $output=false):stringObj {
 		return new stringObj(\sha1($this->_string,$output));
 	}
 	
@@ -54,7 +54,7 @@ class stringObj {
 	}
 	
 	public function crc32():intObj{
-		return new intObj(crc32($this->_string));
+		return new intObj(\crc32($this->_string));
 	}
 	
 	public function crypt():stringObj{
@@ -80,13 +80,16 @@ class stringObj {
             return new intObj(ord($this->_string));
         }
         public function replace(string $repacement,string $replace,int $count=1):stringObj{
-            return new stringObj(str_replace($repacement, $replace, $this->_string,$count));
+            return new stringObj(\str_replace($repacement, $replace, $this->_string,$count));
         }
         public function isEmpty():bool{
-            return empty($this->_array);
+            return empty($this->_string)?true:false;
         }
         public function match(string $regexp):bool{
-            return preg_match($regexp, $this->_string);
+            return \preg_match($regexp, $this->_string);
+        }
+        public function jsonDecode():object{
+            return \json_decode($this->_string,false);
         }
 }
 
@@ -103,7 +106,7 @@ class intObj {
 		return new stringObj(\chr($this->_int));
 	}
         public function toString():stringObj{
-            return new stringObj(strval($this->_int));
+            return new stringObj(\strval($this->_int));
         }
 }
 
@@ -162,22 +165,10 @@ class arrayObj{
             \array_shift($this->_array);
             return $this;
         }
+        public function toArray():array{
+            return $this->_array;
+        }
+        public function jsonEncode():stringObj{
+            return new stringObj($this->jsonEncode($this->_array));
+        }
 }
-
-#################################example#############################################
-$a=new stringObj('abcdefg');
-$b=$a->md5();
-echo $b."\n";
-$c= $b->substr(3);
-echo $c."\n";
-$d=new intObj(40);
-echo $d->chr()."\n";
-$array=new arrayObj([5,7,9,6,8,10,3]);
-$array->rsort()->each(function($key,$value){
-	echo $key."=>".$value." \n";
-});
-$array->pop()->each(
-        function($key,$value){
-	echo $key."=>".$value." \n";
-}
-        );
