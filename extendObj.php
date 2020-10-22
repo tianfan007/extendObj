@@ -227,11 +227,3 @@ class arrayObj {
             return new stringObj($this->jsonEncode($this->_array));
         }
 }
-
-class mathObj {
-
-    public static function abs():float{
-        
-    }
-
-}
