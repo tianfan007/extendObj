@@ -42,3 +42,5 @@ echo $f1->toInt(CEIL);
 
 $ak=new eo\arrayObj(["a"=>"apple","b"=>"banana"]);
 echo $ak->a;
+
+var_dump($ak->toArray());
