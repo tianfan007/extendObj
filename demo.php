@@ -23,13 +23,22 @@ $d=new eo\intObj(40);
 var_dump($d->chr());
 
 
-$array=new eo\arrayObj([5,7,9,6,8,10,3]);
-$array->rsort()->each(function($key,$value){
-	echo $key."=>".$value." \n";
-    });
-$array->pop()->each(
+$array=new eo\arrayObj([5,7,9,6,8,10,80]);
+$array->rsort()->each(
         function($key,$value){
 	echo $key."=>".$value." \n";
+    });
+$array->push(16)->each(
+        function($key,$value){
+	echo $key."=>".$value."\n";
         }
     );
+
 var_dump($array->toArray());
+$f1=new eo\floatObj(3.55);
+$f2=new eo\floatObj(2.9);
+echo $f1->toFloat()+$f2->toFloat();
+echo $f1->toInt(CEIL);
+
+$ak=new eo\arrayObj(["a"=>"apple","b"=>"banana"]);
+echo $ak->a;

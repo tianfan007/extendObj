@@ -97,11 +97,14 @@ class stringObj {
 class intObj {
 	private $_int;
 	public function __construct(int $int){
-		$this->_int=$int;
+            $this->_int=$int;
 	}
 	public function __toString():string {
-		return $this->_int;
+            return strval($this->_int);
 	}
+        public function toInt():int{
+            return $this->_int;
+        }
 	public function chr():stringObj{
 		return new stringObj(\chr($this->_int));
 	}
@@ -114,13 +117,58 @@ class intObj {
 }
 
 
+define("CEIL",0);
+define("FLOOR",1);
+define("ROUND",2);
+class floatObj {
+    private $_float;
+    function __construct(float $float) {
+        $this->_float=$float;
+    }
+    public function toInt($type=FLOOR):int{
+        switch ($type){
+            case FLOOR:{
+                $return=\floor($this->_float);
+                break;
+            }
+            case CEIL:{
+                $return=\ceil($this->_float);
+                break;
+            }
+            case ROUND:{
+                $return=\round($this->_float);
+                break;
+            }
+        }
+        return $return;
+    }
+    public function toDecimal():int{
+        $tmp=\strval($this->_float);
+        $decimal=\explode(".",$tmp);
+        return isset($decimal[1])?intval($decimal[1]):0;
+    }
+    public function toFloat():float{
+        return $this->_float;
+    }
+    public function __toString() {
+        return strval($this->_float);
+    }
+}
 
-class arrayObj{
+
+class arrayObj {
 	private $_array;
 	public function __construct(array $array){
 		$this->_array=$array;
 	}
-	public function each($callback): void{
+        public function __get($name) {
+            if(\array_key_exists($name, $this->_array)){
+                return new stringObj($this->_array[$name]);
+            }else{
+                throw new \Exception(__CLASS__."->".$name." is not exist");
+            }
+        }
+	public function each(callable $callback): void{
 		foreach($this->_array as $key=>$value){
 			\call_user_func($callback,$key,$value);
 		}
@@ -160,12 +208,16 @@ class arrayObj{
             \array_pop($this->_array);
             return $this;
         }
-        public function push():arrayObj{
-            \array_push($this->_array);
+        public function push($value):arrayObj{
+            \array_push($this->_array,$value);
             return $this;
         }
         public function shift():arrayObj{
             \array_shift($this->_array);
+            return $this;
+        }
+        public function append($value):arrayObj{
+            \array_unshift($this->_array,$value);
             return $this;
         }
         public function toArray():array{
@@ -174,4 +226,12 @@ class arrayObj{
         public function jsonEncode():stringObj{
             return new stringObj($this->jsonEncode($this->_array));
         }
+}
+
+class mathObj {
+
+    public static function abs():float{
+        
+    }
+
 }
