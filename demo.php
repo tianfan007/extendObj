@@ -40,7 +40,7 @@ $f2=new eo\floatObj(2.9);
 echo $f1->toFloat()+$f2->toFloat();
 echo $f1->toInt(CEIL);
 
-$ak=new eo\arrayObj(["a"=>"apple","b"=>"banana"]);
-echo $ak->a;
+$ak=new eo\arrayObj(["a"=>["first"=>"a","last"=>"e","full"=>"apple"],"b"=>"banana","c"=>"coconut","d"=>"durian"]);
+echo $ak->a->full;
 
 var_dump($ak->toArray());

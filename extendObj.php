@@ -39,7 +39,6 @@ class stringObj {
 	}
 	
 	public function substr():stringObj {
-		
 		$params= \func_get_args();
 		return new stringObj(\substr($this->_string, ...$params));
 	}
@@ -85,8 +84,26 @@ class stringObj {
         public function isEmpty():bool{
             return empty($this->_string)?true:false;
         }
-        public function match(string $regexp):bool{
+        public function test(string $regexp):bool{
             return \preg_match($regexp, $this->_string);
+        }
+        public function match(string $regexp,bool $matchAll=false):?arrayObj{
+            $match="";
+            if($matchAll==false){
+                if(\preg_match($regexp, $this->_string, $match)){
+                        return new arrayObj($match);
+                }
+                else{
+                    return false;
+                }
+            }elseif($matchAll==true){
+                if(\preg_match_all($regexp, $this->_string, $match)!=0){
+                        return new arrayObj($match);
+                }
+                else{
+                    return false;
+                }
+            }
         }
         public function jsonDecode():object{
             return \json_decode($this->_string,false);
@@ -162,10 +179,23 @@ class arrayObj {
 		$this->_array=$array;
 	}
         public function __get($name) {
-            if(\array_key_exists($name, $this->_array)){
-                return new stringObj($this->_array[$name]);
-            }else{
-                throw new \Exception(__CLASS__."->".$name." is not exist");
+            try{
+                return $this->_arrayToObj($this->_array)->{$name};
+            }catch(Exception $e){
+                echo $e->getMessage();
+            }
+         }
+        private function _arrayToObj($array): object{
+            $o=new \stdClass();
+            if(\is_array($array)){
+                foreach ($array as $key => $value) {
+                    if(\is_array($value)){
+                        $o->$key=self::_arrayToObj($value);
+                    }else{
+                        $o->$key=$value;
+                    }
+                }
+               return $o;
             }
         }
 	public function each(callable $callback): void{
@@ -224,6 +254,6 @@ class arrayObj {
             return $this->_array;
         }
         public function jsonEncode():stringObj{
-            return new stringObj($this->jsonEncode($this->_array));
+            return new stringObj(\json_encode($this->_array));
         }
 }
