@@ -1,2 +1,4 @@
-# extendObj
-PHP language.You can operate variables in  object-oriented way.
+# Package: extendObj
+
+### Decription: A PHP language library package.through extendOBJ,You can operate INT,FLOAT,ARRAY in object-oriented way.
+
