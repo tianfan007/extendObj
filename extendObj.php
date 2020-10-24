@@ -142,7 +142,7 @@ class floatObj {
     function __construct(float $float) {
         $this->_float=$float;
     }
-    public function toInt($type=FLOOR):int{
+    public function getInt($type=FLOOR):int{
         switch ($type){
             case FLOOR:{
                 $return=\floor($this->_float);
@@ -159,7 +159,7 @@ class floatObj {
         }
         return $return;
     }
-    public function toDecimal():int{
+    public function getDecimal():int{
         $tmp=\strval($this->_float);
         $decimal=\explode(".",$tmp);
         return isset($decimal[1])?intval($decimal[1]):0;

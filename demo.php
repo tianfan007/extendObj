@@ -38,7 +38,7 @@ var_dump($array->toArray());
 $f1=new eo\floatObj(3.55);
 $f2=new eo\floatObj(2.9);
 echo $f1->toFloat()+$f2->toFloat();
-echo $f1->toInt(CEIL);
+echo $f1->getInt(CEIL);
 
 $ak=new eo\arrayObj(["a"=>["first"=>"a","last"=>"e","full"=>"apple"],"b"=>"banana","c"=>"coconut","d"=>"durian"]);
 echo $ak->a->full;
