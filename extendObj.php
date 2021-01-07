@@ -4,7 +4,7 @@
  *@package extendObj
  *@author Tianfan
  *@license Apache License 2.0
- *@varsion 0.0.2
+ *@version 0.0.3
  */
 namespace extendObj;
 
